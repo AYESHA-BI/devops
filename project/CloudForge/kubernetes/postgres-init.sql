@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS deployments (
+    id SERIAL PRIMARY KEY,
+    application VARCHAR(100),
+    environment VARCHAR(50),
+    status VARCHAR(50)
+);
+
+INSERT INTO deployments (application, environment, status)
+VALUES ('CloudForge', 'Dev', 'Running');
