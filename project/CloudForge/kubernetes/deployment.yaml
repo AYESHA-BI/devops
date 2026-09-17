@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cloudforge
-        image: ayeshabi/cloudforge:v1
+        image: ayeshabi/cloudforge:2.1
         ports:
         - containerPort: 80
 
