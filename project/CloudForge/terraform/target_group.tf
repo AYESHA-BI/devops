@@ -12,3 +12,8 @@ resource "aws_lb_target_group" "cloudforge_tg" {
     Name = "CloudForge-TG"
   }
 }
+resource "aws_lb_target_group_attachment" "cloudforge_tg_attachment" {
+  target_group_arn = aws_lb_target_group.cloudforge_tg.arn
+  target_id        = aws_instance.cloudforge_ec2.id
+  port             = 80
+}
