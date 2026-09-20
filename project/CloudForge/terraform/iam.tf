@@ -17,3 +17,7 @@ resource "aws_iam_role" "cloudforge_ec2_role" {
     ]
   })
 }
+resource "aws_iam_instance_profile" "cloudforge_ec2_profile" {
+  name = "CloudForge-EC2-Profile"
+  role = aws_iam_role.cloudforge_ec2_role.name
+}

@@ -6,5 +6,4 @@ variable "aws_region" {
 variable "ami_id" {
   description = "AMI ID for CloudForge EC2"
   type        = string
-  default     = "ami-0fef201115eefe936"
-}
+  }
