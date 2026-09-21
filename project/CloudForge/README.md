@@ -65,7 +65,7 @@ This organization demonstrates how application code, containerization, orchestra
 
 ## Architecture
 ###  Architecture Diagram
-![CloudForge Architecture](../screenshots/Archiecture.png)
+![CloudForge ](../screenshots Archiecture.png)
 
 ### Architecture Overview
 
