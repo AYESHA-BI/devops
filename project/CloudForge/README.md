@@ -174,7 +174,7 @@ The application includes:
 
 ### Application Screenshot
 
-![CloudForge Application](screenshots/application.png)
+![CloudForge Application](screenshots%20application.png)
 
 ### Application Purpose
 
