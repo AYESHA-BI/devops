@@ -215,7 +215,7 @@ git commit -m "Update CloudForge project"
 # Push changes to GitHub
 git push origin main
 
-###  Repository Contents
+### Repository Contents
 
 The GitHub repository maintains the major components of CloudForge:
 
@@ -280,7 +280,7 @@ docker run -d -p 8080:80 ayeshabi/cloudforge:2.1
 docker ps
 
 # Push the image to Docker Hub
-docker push ayeshabi/cloudforge:<version>
+docker push ayeshabi/cloudforge:2.1
 
 ###  Docker Hub
 
@@ -289,7 +289,7 @@ Docker Hub acts as the container registry, making the image available for the Ku
 
 ### Docker Hub Image
 
-![CloudForge Docker Hub Image](screenshots/docker-hub.png)
+![CloudForge Docker Hub](screenshots%20dockerhub.png)
 
 ### Outcome
 
@@ -395,7 +395,7 @@ PostgreSQL Deployment
      Persistent Storage
 
 ### Kubernetes Verification
-![Kubernetes Deployment Verification](screenshots/kubernetes-verification.png)
+![Kubernetes Deployment Verification](screenshots%20kubernetes.png)
 
 The deployment is verified using Kubernetes commands:
 
