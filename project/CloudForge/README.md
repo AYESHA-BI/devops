@@ -104,7 +104,7 @@ The application deployment flow starts with source code in GitHub, moves through
 The infrastructure provisioning flow is managed using Terraform, which defines and provisions the required AWS resources.
 Together, these components demonstrate practical knowledge of **Git, automation, Docker, Kubernetes, Infrastructure as Code, and AWS**.
 
-  ## 4. Technology Stack
+  ##  Technology Stack
 
 CloudForge uses the following technologies to build, containerize, deploy, automate, and provision the application infrastructure.
 
@@ -158,7 +158,7 @@ The technologies were selected to demonstrate the major stages of a practical De
 **Version Control → Automation → Containerization → Image Management → Orchestration → Infrastructure as Code → Cloud**
 Together, they demonstrate practical skills in **Linux operations, source-code management, deployment automation, containerization, Kubernetes orchestration, Infrastructure as Code, and AWS infrastructure management**.
 
-## 5. Application
+##  Application
 
 CloudForge is a lightweight web application created to demonstrate an end-to-end DevOps deployment workflow.
 The application is used as the deployment workload throughout the project, progressing from source-code management and containerization to Kubernetes deployment and cloud infrastructure provisioning.
@@ -181,7 +181,7 @@ The application provides a simple and visible workload for demonstrating:
 **Git → Docker → Docker Hub → Kubernetes → Terraform → AWS**
 The application is intentionally lightweight so that the focus remains on the **DevOps implementation, deployment process, automation, and infrastructure management** rather than application complexity.
 
-## 6. Git & GitHub Implementation
+##  Git & GitHub Implementation
 
 Git and GitHub are used to manage and version-control the CloudForge source code and DevOps configuration.
 **Git** manages changes locally, while **GitHub** stores the project repository remotely and provides a central location for the project.
@@ -414,7 +414,7 @@ The application runs with **2 CloudForge Pods** and is externally accessible thr
 **Kubernetes Flow:**
 **Docker Hub → Deployment → Pods → Service → NodePort → Browser**
 
-## 9. Terraform Infrastructure
+## Terraform Infrastructure
 
 Terraform is used in CloudForge to provision and manage AWS infrastructure using **Infrastructure as Code (IaC)**.
 
@@ -562,7 +562,7 @@ The Terraform implementation demonstrates practical experience with:
 * Infrastructure planning and provisioning
 * Version-controlled infrastructure
 
-  ## 9. AWS Infrastructure
+  ##  AWS Infrastructure
 
 AWS provides the cloud infrastructure for the CloudForge project. Terraform is used to define and provision the required AWS resources as Infrastructure as Code (IaC).
 
@@ -740,7 +740,7 @@ This verifies whether the CloudForge application Pods are successfully running a
 
 The deployment script provides a simple and repeatable automation layer for CloudForge, connecting **Docker image creation, Kubernetes deployment, and deployment verification** into a single workflow.
 
-## 11. Verification & Testing
+##  Verification & Testing
 
 After deployment, CloudForge is verified at each major stage of the DevOps workflow to confirm that the application and infrastructure are functioning as expected.
 
