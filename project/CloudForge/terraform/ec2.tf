@@ -7,7 +7,7 @@ resource "aws_instance" "cloudforge_ec2" {
   vpc_security_group_ids = [
     aws_security_group.cloudforge_sg.id
   ]
-iam_instance_profile = aws_iam_instance_profile.cloudforge_ec2_profile.name
+  iam_instance_profile = aws_iam_instance_profile.cloudforge_ec2_profile.name
 
   tags = {
     Name = "CloudForge-EC2"
