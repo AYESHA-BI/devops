@@ -64,7 +64,6 @@ The workflow can be viewed as:
 This organization demonstrates how application code, containerization, orchestration, infrastructure as code, and automation can be maintained together in a structured DevOps project.
 
 ## Architecture
-###  Architecture Diagram
 
 ![CloudForge Architecture](screenshots%20Archiecture.png)
 
