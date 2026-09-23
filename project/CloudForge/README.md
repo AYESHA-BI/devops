@@ -592,6 +592,8 @@ ec2_public_ip
 
 These outputs make it easier to retrieve the deployed VPC identifier and EC2 public IP after provisioning.
 
+
+
 ### Infrastructure as Code Approach
 
 CloudForge follows a repeatable Infrastructure as Code workflow:
@@ -609,6 +611,8 @@ Apply
 Verify
 
 Terraform therefore provides a consistent way to define, provision, and manage the CloudForge AWS environment through version-controlled configuration.
+
+
 
 ### Outcome
 
@@ -736,7 +740,6 @@ The CloudForge project demonstrates practical experience with:
 
 ### Verification
 Terraform was used to provision the CloudForge AWS infrastructure. The deployment was verified through Terraform outputs, including the EC2 public IP and VPC ID.
-![Terraform Verification](screenshot%20terraform.png)
 
 ## Deployment Automation
 
