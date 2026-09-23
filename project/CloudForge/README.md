@@ -735,7 +735,8 @@ The CloudForge project demonstrates practical experience with:
 * Terraform-based AWS provisioning
 
 ### Verification
-AWS resources are verified through the AWS Console and Terraform outputs after infrastructure provisioning.
+Terraform was used to provision the CloudForge AWS infrastructure. The deployment was verified through Terraform outputs, including the EC2 public IP and VPC ID.
+![Terraform Verification](screenshot%20terraform.png)
 
 ## Deployment Automation
 
@@ -825,7 +826,7 @@ kubectl get pvc
 
 These commands verify the CloudForge application Pods, Kubernetes Services, Deployment status, and PostgreSQL persistent storage.
 
-### Terraform Verification
+### Terraform Verification 
 
 terraform plan
 terraform apply
