@@ -582,8 +582,6 @@ Terraform configures a **CloudWatch CPU utilization alarm** for the CloudForge E
 
 The alarm monitors the `CPUUtilization` metric and triggers when average CPU utilization exceeds **80%** for the configured evaluation period.
 
-This demonstrates basic infrastructure monitoring alongside resource provisioning.
-
 ### Terraform Outputs
 
 The configuration exposes important infrastructure information:
@@ -592,7 +590,11 @@ ec2_public_ip
 
 These outputs make it easier to retrieve the deployed VPC identifier and EC2 public IP after provisioning.
 
+### Terraform Verification
 
+Terraform was used to provision the CloudForge AWS infrastructure. The deployment was verified through Terraform outputs, including the EC2 public IP and VPC ID.
+
+[![Terraform Verification](CloudForge/screenshot%20terraform.png)]
 
 ### Infrastructure as Code Approach
 
@@ -612,8 +614,6 @@ Verify
 
 Terraform therefore provides a consistent way to define, provision, and manage the CloudForge AWS environment through version-controlled configuration.
 
-
-
 ### Outcome
 
 The Terraform implementation demonstrates practical experience with:
@@ -631,25 +631,23 @@ The Terraform implementation demonstrates practical experience with:
 * Infrastructure planning and provisioning
 * Version-controlled infrastructure
 
-  ##  AWS Infrastructure
+## AWS Infrastructure
 
-AWS provides the cloud infrastructure for the CloudForge project. Terraform is used to define and provision the required AWS resources as Infrastructure as Code (IaC).
+AWS provides the cloud infrastructure required to run and support the CloudForge project. The infrastructure is provisioned and managed using **Terraform** as Infrastructure as Code (IaC).
 
 ### AWS Resources Used
 
-| AWS Resource                        | Purpose                                           |
-| ----------------------------------- | ------------------------------------------------- |
-| **VPC**                             | Provides the isolated network environment         |
-| **Subnets**                         | Organize resources within the VPC                 |
-| **Internet Gateway (IGW)**          | Provides internet connectivity                    |
-| **Route Table**                     | Controls network traffic routing                  |
-| **Security Group (SG)**             | Controls inbound and outbound traffic             |
-| **EC2**                             | Provides compute capacity for CloudForge          |
-| **Application Load Balancer (ALB)** | Receives and distributes application traffic      |
-| **Listener**                        | Accepts incoming requests on the ALB              |
-| **Target Group (TG)**               | Routes traffic from the ALB to registered targets |
-| **IAM**                             | Manages AWS identities and permissions            |
-| **S3**                              | Provides object storage                           |
+| AWS Resource                    | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| **VPC**                         | Provides the isolated network environment |
+| **Public Subnet**               | Hosts the CloudForge EC2 instance         |
+| **Internet Gateway**            | Provides internet connectivity            |
+| **Route Table**                 | Routes public network traffic             |
+| **Security Group**              | Controls network access to EC2            |
+| **EC2**                         | Provides compute capacity for CloudForge  |
+| **IAM Role & Instance Profile** | Provides an AWS identity for EC2          |
+| **S3**                          | Provides object storage                   |
+| **CloudWatch**                  | Monitors EC2 CPU utilization              |
 
 ### AWS Architecture Flow
 
@@ -657,32 +655,22 @@ AWS provides the cloud infrastructure for the CloudForge project. Terraform is u
                           │
                          VPC
                           │
+                   Public Subnet
+                          │
               ┌───────────┴───────────┐
               │                       │
-           Subnets              Internet Gateway
+        Route Table              Security Group
               │                       │
-              └───────────┬───────────┘
-                          │
-                     Route Table
-                          │
-                          ▼
-                         ALB
-                          │
-                       Listener
-                          │
-                          ▼
-                    Target Group
-                          │
-                          ▼
-                         EC2
-                          │
-                    Security Group
-                          │
-                          ▼
-                  CloudForge Application
+     Internet Gateway                │
+              │                       ▼
+              └────────────────────► EC2
+                                      │
+                                      ▼
+                              CloudForge Application
 
-             IAM ───────► AWS Resources
-             S3  ───────► Object Storage
+        IAM ────────────────► EC2 Identity
+        S3 ─────────────────► Object Storage
+        CloudWatch ─────────► EC2 Monitoring
 
 ### Application Traffic Flow
 
@@ -692,54 +680,55 @@ Internet Gateway
    ↓
 VPC
    ↓
-Subnet
+Public Subnet
    ↓
-Application Load Balancer
-   ↓
-Listener
-   ↓
-Target Group
+Security Group
    ↓
 EC2
    ↓
 CloudForge Application
 
-The Security Group controls the network traffic allowed to the AWS resources, while IAM manages access and permissions.
+The **Internet Gateway** provides internet connectivity, the **Route Table** directs public traffic, and the **Security Group** controls network access to the EC2 instance.
 
 ### Infrastructure Provisioning
 
-Terraform is used to create and manage the AWS infrastructure.
+Terraform is used to provision and manage the AWS resources through version-controlled configuration files.
 
 Terraform
     ↓
-AWS VPC
+VPC
     ↓
-Subnets + Route Table + IGW
+Public Subnet
     ↓
-ALB + Listener + Target Group
+Internet Gateway + Route Table
     ↓
-EC2 + Security Group
+Security Group
+    ↓
+EC2 + IAM
     ↓
 CloudForge Application
 
-This Infrastructure-as-Code approach allows the AWS environment to be defined in configuration files, reviewed through Terraform planning, and provisioned consistently.
+S3 ───────────────► Object Storage
+CloudWatch ───────► EC2 Monitoring
 
-### AWS Implementation Outcome
+### AWS Implementation
 
-The CloudForge project demonstrates practical experience with:
+The CloudForge project demonstrates practical implementation of:
 
-* AWS networking using VPC and Subnets
+* AWS networking with VPC and public subnet
 * Internet Gateway and Route Tables
 * EC2 compute
 * Security Groups
-* Application Load Balancer
-* ALB Listener and Target Group
-* IAM permissions
-* S3 storage
-* Terraform-based AWS provisioning
+* IAM roles and instance profiles
+* S3 object storage
+* CloudWatch monitoring
+* Terraform-based infrastructure provisioning
 
 ### Verification
-Terraform was used to provision the CloudForge AWS infrastructure. The deployment was verified through Terraform outputs, including the EC2 public IP and VPC ID.
+
+The provisioned AWS infrastructure was verified using Terraform outputs:
+terraform output
+The outputs provide the **VPC ID** and **EC2 public IP**, confirming the deployed AWS resources.
 
 ## Deployment Automation
 
