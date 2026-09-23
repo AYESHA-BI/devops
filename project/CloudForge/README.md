@@ -594,7 +594,7 @@ These outputs make it easier to retrieve the deployed VPC identifier and EC2 pub
 
 Terraform was used to provision the CloudForge AWS infrastructure. The deployment was verified through Terraform outputs, including the EC2 public IP and VPC ID.
 
-[![Terraform Verification](CloudForge/screenshot%20terraform.png)]
+[![Terraform Verification](screenshot%20terraform.png)]
 
 ### Infrastructure as Code Approach
 
