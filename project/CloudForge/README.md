@@ -65,7 +65,7 @@ This organization demonstrates how application code, containerization, orchestra
 
 ## Architecture
 
-![CloudForge Architecture](screenshots%20Archiecture.png)
+![CloudForge Architecture](screenshot%20Archiecture.png)
 
 ### Architecture Overview
 
@@ -173,7 +173,7 @@ The application includes:
 
 ### Application Screenshot
 
-![CloudForge Application](screenshots%20application.png)
+![CloudForge Application](screenshot%20application.png)
 
 ### Application Purpose
 
