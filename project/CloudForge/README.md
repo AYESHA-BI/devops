@@ -416,114 +416,189 @@ The application runs with **2 CloudForge Pods** and is externally accessible thr
 
 ## Terraform Infrastructure
 
-Terraform is used in CloudForge to provision and manage AWS infrastructure using **Infrastructure as Code (IaC)**.
+CloudForge uses **Terraform** to provision and manage AWS infrastructure using **Infrastructure as Code (IaC)**.
 
-The infrastructure is defined in Terraform configuration files instead of being created manually. This makes the environment easier to review, reproduce, and manage through version-controlled configuration.
+Instead of creating AWS resources manually, the infrastructure is defined in version-controlled Terraform configuration files. This makes the environment consistent, reviewable, and reproducible.
 
 ### Terraform Structure
 
 terraform/
-├── main.tf
+├── provider.tf
+├── vpc.tf
+├── subnet.tf
+├── internet_gateway.tf
+├── route_table.tf
+├── security_group.tf
+├── ec2.tf
+├── iam.tf
+├── s3.tf
+├── cloudwatch.tf
 ├── variables.tf
 ├── terraform.tfvars
 └── outputs.tf
 
-| File               | Purpose                                       |
-| ------------------ | --------------------------------------------- |
-| `main.tf`          | Defines AWS infrastructure resources          |
-| `variables.tf`     | Declares configurable input variables         |
-| `terraform.tfvars` | Provides values for Terraform variables       |
-| `outputs.tf`       | Displays important infrastructure information |
+| File                  | Purpose                                       |
+| --------------------- | --------------------------------------------- |
+| `provider.tf`         | Configures the AWS provider and region        |
+| `vpc.tf`              | Defines the CloudForge VPC                    |
+| `subnet.tf`           | Creates the public subnet                     |
+| `internet_gateway.tf` | Provides internet connectivity                |
+| `route_table.tf`      | Defines and associates the public route table |
+| `security_group.tf`   | Controls EC2 network traffic                  |
+| `ec2.tf`              | Provisions the CloudForge EC2 instance        |
+| `iam.tf`              | Defines the EC2 IAM role and instance profile |
+| `s3.tf`               | Creates the CloudForge S3 bucket              |
+| `cloudwatch.tf`       | Configures EC2 CPU monitoring                 |
+| `variables.tf`        | Defines configurable Terraform variables      |
+| `terraform.tfvars`    | Provides variable values                      |
+| `outputs.tf`          | Exposes important infrastructure information  |
 
-### AWS Infrastructure Provisioned
+### AWS Infrastructure
 
-Terraform manages the networking, compute, security, load balancing, and storage components required for the CloudForge environment.
+Terraform provisions the core AWS infrastructure required for CloudForge.
 
-| Resource                            | Purpose                                       |
-| ----------------------------------- | --------------------------------------------- |
-| **VPC**                             | Provides the isolated AWS network             |
-| **Subnets**                         | Organize resources within the VPC             |
-| **Internet Gateway (IGW)**          | Provides internet connectivity for the VPC    |
-| **Route Table**                     | Controls network traffic routing              |
-| **Security Group (SG)**             | Controls allowed inbound and outbound traffic |
-| **EC2**                             | Provides compute capacity                     |
-| **Application Load Balancer (ALB)** | Receives and distributes application traffic  |
-| **Target Group (TG)**               | Defines the targets that receive ALB traffic  |
-| **Listener**                        | Defines how the ALB accepts incoming requests |
-| **IAM**                             | Manages AWS identities and permissions        |
-| **S3**                              | Provides object storage                       |
+| AWS Resource                    | Purpose                                   |
+| ------------------------------- | ----------------------------------------- |
+| **VPC**                         | Provides the isolated network environment |
+| **Public Subnet**               | Provides network placement for EC2        |
+| **Internet Gateway**            | Enables internet connectivity             |
+| **Route Table**                 | Routes internet-bound traffic             |
+| **Security Group**              | Controls EC2 inbound and outbound traffic |
+| **EC2**                         | Provides compute for CloudForge           |
+| **IAM Role & Instance Profile** | Provides an AWS identity for EC2          |
+| **S3 Bucket**                   | Provides object storage                   |
+| **CloudWatch Alarm**            | Monitors EC2 CPU utilization              |
 
-### Infrastructure Flow
+### Infrastructure Architecture
 
-                         Terraform
-                             │
-                             ▼
-                            AWS
-                             │
-                            VPC
-                             │
-              ┌──────────────┴──────────────┐
-              │                             │
-           Subnets                    Internet Gateway
-              │                             │
-              ▼                             │
-        Route Table ◄────────────────────────┘
-              │
-              ▼
-             ALB
-              │
-          Listener
-              │
-              ▼
-        Target Group
-              │
-              ▼
-             EC2
-              │
-        Security Group
-              │
-              ▼
-       CloudForge Application
+                         AWS
+                          │
+                          ▼
+                     CloudForge VPC
+                    10.0.0.0/16
+                          │
+                          ▼
+                  Public Subnet
+                   10.0.1.0/24
+                          │
+                 ┌────────┴────────┐
+                 │                 │
+                 ▼                 ▼
+            Route Table      Security Group
+                 │                 │
+                 ▼                 ▼
+          Internet Gateway       EC2
+                                   │
+                                   ▼
+                         CloudForge Application
 
-        IAM ─────────► AWS Resources
-        S3  ─────────► Object Storage
+        IAM ───────────────► EC2
+        S3  ───────────────► Object Storage
+        CloudWatch ────────► EC2 Monitoring
 
 ### Terraform Workflow
 
 Terraform Configuration
-        ↓
+        │
+        ▼
 terraform init
-        ↓
-terraform validate
-        ↓
+        │
+        ▼
 terraform fmt
-        ↓
+        │
+        ▼
+terraform validate
+        │
+        ▼
 terraform plan
-        ↓
+        │
+        ▼
 terraform apply
-        ↓
+        │
+        ▼
 AWS Infrastructure
-        ↓
+        │
+        ▼
 Verification
 
 ### Terraform Commands
 
 terraform init
-terraform validate
 terraform fmt
+terraform validate
 terraform plan
 terraform apply
 terraform output
 
-These commands demonstrate the standard Terraform workflow for initializing, validating, formatting, reviewing, provisioning, and retrieving information about the infrastructure.
+* **`terraform init`** — Initializes the Terraform working directory and providers.
+* **`terraform fmt`** — Formats Terraform configuration files.
+* **`terraform validate`** — Checks the configuration for syntax and configuration errors.
+* **`terraform plan`** — Previews the infrastructure changes Terraform will make.
+* **`terraform apply`** — Provisions the defined AWS resources.
+* **`terraform output`** — Displays configured Terraform outputs such as the VPC ID and EC2 public IP.
 
-### Infrastructure as Code
+### Variables and Configuration
 
-CloudForge uses Terraform to manage AWS infrastructure through configuration files.
+The AWS region is configured through a Terraform variable:
 
-The workflow is:
+hcl
+variable "aws_region" {
+  description = "AWS region for CloudForge"
+  type        = string
+  default     = "us-east-1"
+}
+
+The EC2 AMI is also configurable:
+
+hcl
+variable "ami_id" {
+  description = "AMI ID for CloudForge EC2"
+  type        = string
+}
+
+The AMI value is supplied through `terraform.tfvars`:
+
+hcl
+ami_id = "ami-0fef201115eefe936"
+
+This keeps environment-specific values separate from the main resource definitions.
+
+### EC2 Configuration
+
+CloudForge uses a `t2.micro` EC2 instance deployed inside the public subnet.
+
+The instance is associated with:
+
+* CloudForge Security Group
+* IAM Instance Profile
+* Public subnet
+* CloudForge VPC
+
+The public subnet is configured to automatically assign public IP addresses to launched instances.
+
+### Monitoring
+
+Terraform configures a **CloudWatch CPU utilization alarm** for the CloudForge EC2 instance.
+
+The alarm monitors the `CPUUtilization` metric and triggers when average CPU utilization exceeds **80%** for the configured evaluation period.
+
+This demonstrates basic infrastructure monitoring alongside resource provisioning.
+
+### Terraform Outputs
+
+The configuration exposes important infrastructure information:
+vpc_id
+ec2_public_ip
+
+These outputs make it easier to retrieve the deployed VPC identifier and EC2 public IP after provisioning.
+
+### Infrastructure as Code Approach
+
+CloudForge follows a repeatable Infrastructure as Code workflow:
 
 Define
+  ↓
+Format
   ↓
 Validate
   ↓
@@ -531,17 +606,9 @@ Plan
   ↓
 Apply
   ↓
-Provision
-  ↓
 Verify
 
-This approach provides a repeatable way to create and manage the CloudForge AWS environment while keeping infrastructure configuration under version control.
-
-### Verification
-
-The Terraform deployment is verified through Terraform outputs and AWS resources created from the configuration.
-
-![Terraform Verification](screenshots/terraform-verification.png)
+Terraform therefore provides a consistent way to define, provision, and manage the CloudForge AWS environment through version-controlled configuration.
 
 ### Outcome
 
@@ -549,15 +616,13 @@ The Terraform implementation demonstrates practical experience with:
 
 * Infrastructure as Code
 * AWS VPC networking
-* Subnets and route tables
-* Internet Gateway configuration
+* Public subnet configuration
+* Internet Gateway and route tables
 * Security Groups
-* EC2 compute
-* Application Load Balancer
-* ALB Listener
-* Target Groups
-* IAM
-* S3
+* EC2 provisioning
+* IAM instance profiles
+* S3 storage
+* CloudWatch monitoring
 * Terraform variables and outputs
 * Infrastructure planning and provisioning
 * Version-controlled infrastructure
