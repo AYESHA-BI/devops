@@ -1,4 +1,4 @@
-# CloudForge
+## CloudForge
 ### End-to-End DevOps Automation & Application Deployment on AWS
 CloudForge is an end-to-end DevOps project designed to demonstrate automated application 
 deployment and infrastructure provisioning using modern DevOps and AWS technologies.
